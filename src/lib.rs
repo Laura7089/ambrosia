@@ -6,11 +6,10 @@ use std::collections::HashSet;
 use delegate::delegate;
 use serde::Deserialize;
 
+mod ingredient;
 mod parse;
 
-/// Unique ingredient.
-pub type Ingredient = String;
-
+pub use ingredient::Ingredient;
 pub use parse::{DEFAULT_DIETS, DEFAULT_GROUPS};
 
 /// Group of ingredients.
@@ -19,7 +18,7 @@ pub use parse::{DEFAULT_DIETS, DEFAULT_GROUPS};
 /// use ambrosia::*;
 ///
 /// let mut my_group = IngredientGroup::default();
-/// my_group.merge_ingredient("camembert".to_owned());
+/// my_group.merge_ingredient("camembert".into());
 /// for ingred in my_group.ingredients() {
 ///     println!("{ingred}");
 /// }
@@ -28,7 +27,7 @@ pub use parse::{DEFAULT_DIETS, DEFAULT_GROUPS};
 #[serde(deny_unknown_fields)]
 pub struct IngredientGroup {
     #[serde(default)]
-    ingredients: HashSet<String>,
+    ingredients: HashSet<Ingredient>,
 }
 
 impl IngredientGroup {
@@ -63,7 +62,7 @@ impl IngredientGroup {
 /// use ambrosia::*;
 ///
 /// let mut my_diet = Diet::default();
-/// my_diet.merge_ingredient("brie".to_owned());
+/// my_diet.merge_ingredient("brie".into());
 /// for ingred in my_diet.banned_ingredients() {
 ///     println!("{ingred}");
 /// }
@@ -72,7 +71,7 @@ impl IngredientGroup {
 #[serde(deny_unknown_fields)]
 pub struct Diet {
     #[serde(default)]
-    banned_ingredients: HashSet<String>,
+    banned_ingredients: HashSet<Ingredient>,
 }
 
 impl Diet {
