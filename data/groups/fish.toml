@@ -1,0 +1,21 @@
+[groups.fish]
+
+ingredients = [
+  "fish",
+  "haddock",
+  "cod",
+  "salmon",
+  "kipper",
+  "bream",
+  "carp",
+  "bass",
+  "trout",
+  "tuna",
+  "halibut",
+  "flounder",
+  "perch",
+]
+
+subgroups = [
+  "shellfish"
+]

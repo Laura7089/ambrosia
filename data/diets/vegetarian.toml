@@ -1,0 +1,3 @@
+[diets.vegetarian]
+
+banned_groups = ["meat", "fish"]

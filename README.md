@@ -19,8 +19,6 @@ General parameters are read from the environment, command line and config file.
 
 ### People
 
-Peoples' requirements are specified in the `people/` folder.
-
 Needs can be specified in diverse ways:
 
 ```toml
@@ -31,10 +29,10 @@ diets = ["vegetarian", "gluten-free"]
 banned_ingredients = ["tomato", "mushroom"]
 ```
 
-### Diets
+### Diets & Groups
 
-Diets and requirement aliases (such as "vegan", "vegetarian", "lactose-intolerant" etc) are specified in the `diets/` folder.
-Common defaults are provided (see [the folder](./diets_default)).
+Diets here refers to requirement aliases such as "vegan", "vegetarian", "lactose-intolerant" etc.
+Common defaults are provided (see [the `data` folder](./data)).
 
 Needs can be specified as so:
 
@@ -53,5 +51,9 @@ ingredients = [
   "pork",
   "chicken",
   # etc...
+]
+
+subgroups = [
+  "fish"
 ]
 ```

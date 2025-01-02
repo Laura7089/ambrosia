@@ -1,0 +1,14 @@
+[groups.shellfish]
+
+ingredients = [
+  "crab",
+  "lobster",
+  "oyster",
+  "mussel",
+  "clam",
+  "crawfish",
+  "crayfish",
+  "shrimp",
+  "scallop",
+  "prawn",
+]

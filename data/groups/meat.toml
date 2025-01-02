@@ -1,0 +1,16 @@
+[groups.meat]
+
+ingredients = [
+  "pork",
+  "chicken",
+  "beef",
+  "lamb",
+  "duck",
+  "veal",
+  "venison",
+  "mutton",
+]
+
+subgroups = [
+  "fish"
+]

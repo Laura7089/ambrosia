@@ -1,0 +1,4 @@
+[diets.vegan]
+
+banned_groups = ["dairy", "meat", "fish"]
+banned_ingredients = ["honey"]

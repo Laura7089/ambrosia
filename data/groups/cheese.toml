@@ -1,0 +1,28 @@
+[groups.cheese]
+
+# adapted from 
+# https://www.bbcgoodfood.com/howto/guide/30-types-of-cheese-you-should-try
+ingredients = [
+  "cheese",
+  "cheddar",
+  "stilton",
+  "parmesan",
+  "feta",
+  "ricotta",
+  "halloumi",
+  "emmental",
+  "monterey jack",
+  "mozzarella",
+  "burrata",
+  "pecorino",
+  "grouda",
+  "wensleydale",
+  "brie",
+  "camembert",
+  "manchego",
+  "edam",
+  "mascarpone",
+  "paneer",
+  "red leicester",
+  "gorgonzola"
+]
