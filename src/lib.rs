@@ -44,6 +44,9 @@ impl IngredientGroup {
             /// Merge an ingredient into this group's list.
             #[call(insert)]
             pub fn merge_ingredient(&mut self, ingred: Ingredient);
+
+            /// Check if an ingredient is included in the group.
+            pub fn contains(&self, ingred: &Ingredient) -> bool;
         }
 
         to (&self.ingredients) {
@@ -85,6 +88,10 @@ impl Diet {
             /// Merge an ingredient into this diet's banlist.
             #[call(insert)]
             pub fn merge_ingredient(&mut self, ingred: Ingredient);
+
+            /// Check if an ingredient is disallowed.
+            #[call(contains)]
+            pub fn disallows(&self, ingred: &Ingredient) -> bool;
         }
 
         to (&self.banned_ingredients) {
