@@ -1,4 +1,4 @@
-# Meal Planning System
+# Ambrosia
 
 A planning system for a group of people with multiple dietary requirements.
 Pulls from [mealie](https://mealie.io/) for recipe information.
