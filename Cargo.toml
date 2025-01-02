@@ -1,8 +1,9 @@
 [package]
-name = "group_meal_planner"
+name = "ambrosia"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+delegate = "0.13.1"
 serde = { version = "1.0.217", features = ["derive"] }
 toml = "0.8.19"

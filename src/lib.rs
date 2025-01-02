@@ -3,7 +3,8 @@
 
 use std::{cell::LazyCell, collections::HashSet};
 
-use serde::{Deserialize, Serialize};
+use delegate::delegate;
+use serde::Deserialize;
 
 const DEFAULT_GROUPS_RAW: &[&str] = &[
     include_str!("../data/groups/cheese.toml"),
@@ -41,34 +42,64 @@ pub const DEFAULT_DIETS: LazyCell<Vec<Diet>> = LazyCell::new(|| {
 pub type Ingredient = String;
 
 /// Group of ingredients.
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Default)]
+#[serde(deny_unknown_fields)]
 pub struct IngredientGroup {
     ingredients: HashSet<String>,
 }
 
 impl IngredientGroup {
-    /// Iterate over all ingredients in the group.
-    pub fn ingredients(&self) -> impl Iterator<Item = &Ingredient> {
-        (&self.ingredients).into_iter()
+    delegate! {
+        to self.ingredients {
+            /// Merge an ingredient into this group's list.
+            #[call(insert)]
+            pub fn merge_ingredient(&mut self, ingred: Ingredient);
+        }
+
+        to (&self.ingredients) {
+            /// Iterate over all ingredients in the group.
+            #[call(into_iter)]
+            pub fn ingredients(&self) -> impl Iterator<Item = &Ingredient>;
+        }
     }
 }
 
 /// Information about a particular diet.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+///
+/// ```
+/// use ambrosia::*;
+///
+/// let mut my_diet = Diet::default();
+/// my_diet.merge_ingredient("brie".to_owned());
+/// for ingred in my_diet.banned_ingredients() {
+///     println!("{ingred}");
+/// }
+/// ```
+#[derive(Clone, Debug, Deserialize, Default)]
+#[serde(deny_unknown_fields)]
 pub struct Diet {
     banned_ingredients: HashSet<String>,
 }
 
 impl Diet {
-    /// Iterate over all banned ingredients in the diet.
-    pub fn banned_ingredients(&self) -> impl Iterator<Item = &Ingredient> {
-        (&self.banned_ingredients).into_iter()
-    }
-
     /// Merge a group of ingredients into this diet's banlist.
     pub fn merge_group(&mut self, group: &IngredientGroup) {
         for ingred in &group.ingredients {
-            self.banned_ingredients.insert(ingred.clone());
+            self.merge_ingredient(ingred.clone());
+        }
+    }
+
+    delegate! {
+        to self.banned_ingredients {
+            /// Merge an ingredient into this diet's banlist.
+            #[call(insert)]
+            pub fn merge_ingredient(&mut self, ingred: Ingredient);
+        }
+
+        to (&self.banned_ingredients) {
+            /// Iterate over all banned ingredients in the diet.
+            #[call(into_iter)]
+            pub fn banned_ingredients(&self) -> impl Iterator<Item = &Ingredient>;
         }
     }
 }
