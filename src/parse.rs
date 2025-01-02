@@ -22,11 +22,11 @@ struct IngredientsGroupUnflattened {
 type IngredientsGroupsFreshParse = HashMap<String, IngredientsGroupUnflattened>;
 
 fn flatten_groups(
-    groups_unflattened: IngredientsGroupsFreshParse,
+    groups_unflattened: &IngredientsGroupsFreshParse,
 ) -> HashMap<String, IngredientGroup> {
     let mut map = HashMap::new();
 
-    for (name, group_unflattened) in &groups_unflattened {
+    for (name, group_unflattened) in groups_unflattened {
         let mut group = group_unflattened.inner.clone();
         for subgroup in &group_unflattened.subgroups {
             group.merge_group(
@@ -48,14 +48,14 @@ fn flatten_groups(
 pub const DEFAULT_GROUPS: LazyCell<HashMap<String, IngredientGroup>> = LazyCell::new(|| {
     let merged = &DEFAULT_GROUPS_RAW.join("\n");
     let raw: HashMap<String, IngredientsGroupsFreshParse> =
-        toml::from_str(&merged).expect("parse error in default groups");
+        toml::from_str(merged).expect("parse error in default groups");
 
     let groups_unflattened = raw
         .get("groups")
         .expect("no 'groups' map found in default groups")
         .clone();
 
-    flatten_groups(groups_unflattened)
+    flatten_groups(&groups_unflattened)
 });
 
 #[derive(Deserialize, Debug, Clone)]
@@ -67,16 +67,16 @@ struct DietUnflattened {
 type DietsFreshParse = HashMap<String, DietUnflattened>;
 
 fn flatten_diets(
-    diets_unflattened: DietsFreshParse,
+    diets_unflattened: &DietsFreshParse,
     groups: &HashMap<String, IngredientGroup>,
 ) -> HashMap<String, Diet> {
     let mut map = HashMap::new();
 
-    for (name, diet_unflattened) in &diets_unflattened {
+    for (name, diet_unflattened) in diets_unflattened {
         let mut diet = diet_unflattened.inner.clone();
         for group in &diet_unflattened.banned_groups {
             diet.merge_group(
-                &groups
+                groups
                     .get(group)
                     .unwrap_or_else(|| panic!("unknown group '{group}' referenced")),
             );
@@ -98,14 +98,14 @@ const DEFAULT_DIETS_RAW: &[&str] = &[
 pub const DEFAULT_DIETS: LazyCell<HashMap<String, Diet>> = LazyCell::new(|| {
     let merged = &DEFAULT_DIETS_RAW.join("\n");
     let raw: HashMap<String, DietsFreshParse> =
-        toml::from_str(&merged).expect("parse error in default groups");
+        toml::from_str(merged).expect("parse error in default groups");
 
     let diets_unflattened = raw
         .get("diets")
         .expect("no 'diets' map found in default diets")
         .clone();
 
-    flatten_diets(diets_unflattened, &DEFAULT_GROUPS)
+    flatten_diets(&diets_unflattened, &DEFAULT_GROUPS)
 });
 
 #[cfg(test)]

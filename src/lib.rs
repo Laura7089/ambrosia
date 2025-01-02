@@ -11,6 +11,7 @@ mod parse;
 
 pub use parse::{DEFAULT_DIETS, DEFAULT_GROUPS};
 
+/// Unique ingredient.
 #[nutype(
     sanitize(lowercase),
     derive(
@@ -62,6 +63,7 @@ impl IngredientGroup {
             pub fn merge_ingredient(&mut self, ingred: Ingredient);
 
             /// Check if an ingredient is included in the group.
+            #[must_use]
             pub fn contains(&self, ingred: &Ingredient) -> bool;
         }
 
@@ -107,6 +109,7 @@ impl Diet {
 
             /// Check if an ingredient is disallowed.
             #[call(contains)]
+            #[must_use]
             pub fn disallows(&self, ingred: &Ingredient) -> bool;
         }
 
