@@ -5,5 +5,6 @@ edition = "2021"
 
 [dependencies]
 delegate = "0.13.1"
+nutype = { version = "0.5.1", features = ["serde"] }
 serde = { version = "1.0.217", features = ["derive"] }
 toml = "0.8.19"

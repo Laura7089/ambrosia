@@ -4,13 +4,30 @@
 use std::collections::HashSet;
 
 use delegate::delegate;
+use nutype::nutype;
 use serde::Deserialize;
 
-mod ingredient;
 mod parse;
 
-pub use ingredient::Ingredient;
 pub use parse::{DEFAULT_DIETS, DEFAULT_GROUPS};
+
+#[nutype(
+    sanitize(lowercase),
+    derive(
+        Clone,
+        Display,
+        Debug,
+        PartialEq,
+        Eq,
+        PartialOrd,
+        Ord,
+        Hash,
+        Deserialize,
+        From,
+        FromStr,
+    )
+)]
+pub struct Ingredient(String);
 
 /// Group of ingredients.
 ///
