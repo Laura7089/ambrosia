@@ -7,8 +7,7 @@ The package contains both an executable and a library.
 
 The tool examines recipe ingredients against a known relationship of requirements and banned ingredients, and uses fuzzy matching to filter down to a set of acceptable dishes.
 
-**Disclaimer**: No guarantee is provided that this application will provide safe eating options for all specified people.
-The quality of results is completely dependent on the quality of recipe transcription, completeness of dietary information, and fuzzy search parameters.
+**See the [disclaimer](./DISCLAIMER.md)**.
 
 ## Configuration
 
