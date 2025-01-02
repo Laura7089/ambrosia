@@ -45,6 +45,7 @@ fn flatten_groups(
 /// Default groups baked into the library.
 ///
 #[doc = include_str!("../DISCLAIMER.md")]
+#[allow(clippy::missing_panics_doc)]
 pub fn default_groups() -> &'static HashMap<String, IngredientGroup> {
     static DEFAULT_GROUPS: OnceLock<HashMap<String, IngredientGroup>> = OnceLock::new();
 
@@ -99,6 +100,7 @@ const DEFAULT_DIETS_RAW: &[&str] = &[
 /// Default diets baked into the library.
 ///
 #[doc = include_str!("../DISCLAIMER.md")]
+#[allow(clippy::missing_panics_doc)]
 pub fn default_diets() -> &'static HashMap<String, Diet> {
     static DEFAULT_DIETS: OnceLock<HashMap<String, Diet>> = OnceLock::new();
     DEFAULT_DIETS.get_or_init(|| {
