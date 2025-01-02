@@ -1,11 +1,10 @@
-use std::cell::LazyCell;
 use std::fs::read_dir;
 
-use ambrosia::DEFAULT_DIETS;
+use ambrosia::default_diets;
 
 #[test]
 fn default_diets_parses() {
-    println!("{}", LazyCell::force(&DEFAULT_DIETS).len());
+    println!("{}", default_diets().len());
 }
 
 #[test]
@@ -17,5 +16,5 @@ fn all_diets_parsed() {
         .filter(|e| e.file_type().unwrap().is_file())
         .count();
 
-    assert!(DEFAULT_DIETS.len() >= num_diet_files);
+    assert!(default_diets().len() >= num_diet_files);
 }

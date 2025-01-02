@@ -1,10 +1,10 @@
-use std::{cell::LazyCell, fs::read_dir};
+use std::fs::read_dir;
 
-use ambrosia::DEFAULT_GROUPS;
+use ambrosia::default_groups;
 
 #[test]
 fn default_groups_parses() {
-    println!("{}", LazyCell::force(&DEFAULT_GROUPS).len());
+    println!("{}", default_groups().len());
 }
 
 #[test]
@@ -16,5 +16,5 @@ fn all_groups_parsed() {
         .filter(|e| e.file_type().unwrap().is_file())
         .count();
 
-    assert!(DEFAULT_GROUPS.len() >= num_group_files);
+    assert!(default_groups().len() >= num_group_files);
 }

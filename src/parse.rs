@@ -1,6 +1,6 @@
 use serde::Deserialize;
-use std::cell::LazyCell;
 use std::collections::HashMap;
+use std::sync::OnceLock;
 
 use crate::{Diet, IngredientGroup};
 
@@ -45,18 +45,22 @@ fn flatten_groups(
 /// Default groups baked into the library.
 ///
 #[doc = include_str!("../DISCLAIMER.md")]
-pub const DEFAULT_GROUPS: LazyCell<HashMap<String, IngredientGroup>> = LazyCell::new(|| {
-    let merged = &DEFAULT_GROUPS_RAW.join("\n");
-    let raw: HashMap<String, IngredientsGroupsFreshParse> =
-        toml::from_str(merged).expect("parse error in default groups");
+pub fn default_groups() -> &'static HashMap<String, IngredientGroup> {
+    static DEFAULT_GROUPS: OnceLock<HashMap<String, IngredientGroup>> = OnceLock::new();
 
-    let groups_unflattened = raw
-        .get("groups")
-        .expect("no 'groups' map found in default groups")
-        .clone();
+    DEFAULT_GROUPS.get_or_init(|| {
+        let merged = &DEFAULT_GROUPS_RAW.join("\n");
+        let raw: HashMap<String, IngredientsGroupsFreshParse> =
+            toml::from_str(merged).expect("parse error in default groups");
 
-    flatten_groups(&groups_unflattened)
-});
+        let groups_unflattened = raw
+            .get("groups")
+            .expect("no 'groups' map found in default groups")
+            .clone();
+
+        flatten_groups(&groups_unflattened)
+    })
+}
 
 #[derive(Deserialize, Debug, Clone)]
 struct DietUnflattened {
@@ -95,18 +99,21 @@ const DEFAULT_DIETS_RAW: &[&str] = &[
 /// Default diets baked into the library.
 ///
 #[doc = include_str!("../DISCLAIMER.md")]
-pub const DEFAULT_DIETS: LazyCell<HashMap<String, Diet>> = LazyCell::new(|| {
-    let merged = &DEFAULT_DIETS_RAW.join("\n");
-    let raw: HashMap<String, DietsFreshParse> =
-        toml::from_str(merged).expect("parse error in default groups");
+pub fn default_diets() -> &'static HashMap<String, Diet> {
+    static DEFAULT_DIETS: OnceLock<HashMap<String, Diet>> = OnceLock::new();
+    DEFAULT_DIETS.get_or_init(|| {
+        let merged = &DEFAULT_DIETS_RAW.join("\n");
+        let raw: HashMap<String, DietsFreshParse> =
+            toml::from_str(merged).expect("parse error in default groups");
 
-    let diets_unflattened = raw
-        .get("diets")
-        .expect("no 'diets' map found in default diets")
-        .clone();
+        let diets_unflattened = raw
+            .get("diets")
+            .expect("no 'diets' map found in default diets")
+            .clone();
 
-    flatten_diets(&diets_unflattened, &DEFAULT_GROUPS)
-});
+        flatten_diets(&diets_unflattened, default_groups())
+    })
+}
 
 #[cfg(test)]
 mod tests {

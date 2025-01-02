@@ -9,7 +9,7 @@ use serde::Deserialize;
 
 mod parse;
 
-pub use parse::{DEFAULT_DIETS, DEFAULT_GROUPS};
+pub use parse::{default_diets, default_groups};
 
 /// Unique ingredient.
 #[nutype(
