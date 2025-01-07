@@ -7,8 +7,10 @@ use delegate::delegate;
 use nutype::nutype;
 use serde::Deserialize;
 
+mod mealie;
 mod parse;
 
+pub use mealie::MealieApi;
 pub use parse::{default_diets, default_groups};
 
 /// Unique ingredient.
